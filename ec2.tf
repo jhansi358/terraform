@@ -1,5 +1,5 @@
 resource "aws_instance" "ec2-eg" {
-  ami           = "ami-0b4f379183e5706b9"
+  ami           = var.ami
   instance_type = "t3.micro"
 
   tags = var.tag
@@ -15,7 +15,7 @@ resource "aws_security_group" "web_sg" {
     from_port   = var.inbound
     to_port     = 0
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]   # open to all (use cautiously!)
+    cidr_blocks = var.cidr_blocks  # open to all (use cautiously!)
   }
 
   # Outbound rules
@@ -23,7 +23,7 @@ resource "aws_security_group" "web_sg" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"            # all protocols
-    cidr_blocks = ["0.0.0.0/0"]   # allow all outbound
+    cidr_blocks = var.cidr_blocks   # allow all outbound
   }
 
   tags = {
